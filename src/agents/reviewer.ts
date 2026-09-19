@@ -1,5 +1,6 @@
 import { createAgent } from '@flue/runtime'
 import { local } from '@flue/runtime/node'
+import { registerCloudflareWorkersAi } from '../common/cloudflare-provider'
 import { createReporter } from '../github/reporter'
 import { connectMcpServers } from '../mcp/connect'
 import { resolveReviewConfig } from '../review/config'
@@ -18,6 +19,7 @@ import { createSuggestChangeTool } from '../tools/suggest-change'
  * set). The workflow supplies the actual work (the diff/context) via the prompt.
  */
 export default createAgent(async ({ env }) => {
+  registerCloudflareWorkersAi(env as NodeJS.ProcessEnv)
   const cfg = resolveReviewConfig(undefined, env as NodeJS.ProcessEnv)
   const reporter = createReporter(cfg)
   // MCP tools are optional (empty unless SHIPPIE_MCP_SERVERS is configured). They
